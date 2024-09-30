@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class ChewiePlayer extends StatefulWidget {
-  final String videoUrl;
+  String videoUrl;
 
-  const ChewiePlayer({super.key, required this.videoUrl});
+  ChewiePlayer({super.key, required this.videoUrl});
 
   @override
   _ChewieVideoPlayerScreenState createState() =>

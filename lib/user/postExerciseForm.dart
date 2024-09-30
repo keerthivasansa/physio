@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:physio/api/auth.dart';
 import 'package:physio/nav/bar.dart';
+import 'package:physio/user/api.dart';
+import 'package:physio/user/dashboard.dart';
+import 'package:physio/utils.dart';
 
 class HealthInfoForm extends StatefulWidget {
   @override
@@ -8,9 +12,9 @@ class HealthInfoForm extends StatefulWidget {
 
 class _HealthInfoFormState extends State<HealthInfoForm> {
   final _formKey = GlobalKey<FormState>();
-  String? heartRate;
-  String? respiratoryRate;
-  String? oxygenSaturation;
+  PatientApi api = locator.get();
+
+  int? heartRate, respiratoryRate, oxygen;
   String? feedback;
 
   @override
@@ -33,19 +37,19 @@ class _HealthInfoFormState extends State<HealthInfoForm> {
                 label: 'Heart Rate',
                 hint: 'Enter Your Heart Rate',
                 icon: Icons.favorite,
-                onSaved: (value) => heartRate = value,
+                onSaved: (value) => heartRate = int.parse(value),
               ),
               _buildInputField(
                 label: 'Respiratory Rate',
                 hint: 'Enter your Respiratory rate',
                 icon: Icons.person,
-                onSaved: (value) => respiratoryRate = value,
+                onSaved: (value) => respiratoryRate = int.parse(value),
               ),
               _buildInputField(
                 label: 'Oxygen Saturation',
                 hint: 'Enter your Oxygen saturation',
                 icon: Icons.lock,
-                onSaved: (value) => oxygenSaturation = value,
+                onSaved: (value) => oxygen = int.parse(value),
               ),
               SizedBox(height: 20),
               Text(
@@ -68,7 +72,9 @@ class _HealthInfoFormState extends State<HealthInfoForm> {
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 15),
                   ),
-                  onPressed: _submitForm,
+                  onPressed: () async {
+                    _submitForm(context);
+                  },
                 ),
               ),
             ],
@@ -82,7 +88,7 @@ class _HealthInfoFormState extends State<HealthInfoForm> {
     required String label,
     required String hint,
     required IconData icon,
-    required Function(String?) onSaved,
+    required Function(String) onSaved,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,21 +103,29 @@ class _HealthInfoFormState extends State<HealthInfoForm> {
             prefixIcon: Icon(icon, color: Colors.grey),
             border: UnderlineInputBorder(),
           ),
-          onSaved: onSaved,
+          keyboardType: TextInputType.number,
+          onSaved: (val) {
+            if (val != null) {
+              onSaved(val);
+            }
+          },
         ),
         SizedBox(height: 20),
       ],
     );
   }
 
-  void _submitForm() {
+  void _submitForm(BuildContext ctx) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       // TODO: Process the form data (e.g., send to a server)
-      print('Heart Rate: $heartRate');
-      print('Respiratory Rate: $respiratoryRate');
-      print('Oxygen Saturation: $oxygenSaturation');
-      print('Feedback: $feedback');
+      if (heartRate != null &&
+          respiratoryRate != null &&
+          oxygen != null &&
+          feedback != null) {
+        await api.saveEntry(heartRate!, respiratoryRate!, oxygen!, feedback!);
+        navigate(ctx, Dashboard());
+      }
     }
   }
 }

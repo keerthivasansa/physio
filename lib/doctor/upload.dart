@@ -35,6 +35,7 @@ class _UploadSectionState extends State<UploadSection> {
     final res = await api.getVideos(widget.patientId);
     setState(() {
       for (int day in res.keys) {
+        print(day);
         uploadedFiles[day].addAll(res[day]?.map((ex) => ex.videoName) ?? []);
       }
     });
@@ -57,8 +58,8 @@ class _UploadSectionState extends State<UploadSection> {
   void _removeFile(int day, int index) {
     setState(() {
       String name = uploadedFiles[day].removeAt(index);
+      files[day].removeWhere((file) => file.name == name);
       hasChanges[day] = true;
-      files.remove(name);
     });
   }
 
@@ -148,6 +149,17 @@ class _UploadSectionState extends State<UploadSection> {
               ));
         },
       ),
+      floatingActionButton: hasChanges.any((e) => e)
+          ? IconButton(
+              onPressed: () {
+                _saveChanges(context);
+              },
+              style: const ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(Colors.indigo),
+                foregroundColor: WidgetStatePropertyAll(Colors.white),
+              ),
+              icon: const Icon(Icons.save))
+          : null,
     );
   }
 }

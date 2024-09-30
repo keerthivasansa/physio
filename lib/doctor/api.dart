@@ -14,7 +14,7 @@ class DoctorApi {
     final multipart = await Future.wait(files
         .map((f) => MultipartFile.fromFile(f.path!, filename: f.name))
         .toList());
-    print(multipart);
+
     FormData formData = FormData.fromMap({
       "exercises": filenames,
       "day": day,
@@ -46,7 +46,7 @@ class DoctorApi {
     Map<int, List<Exercise>> result = Map();
 
     for (String key in m.keys) {
-      result[int.parse(key) - 1] = convertJsonToList(Exercise.fromJson, m[key]);
+      result[int.parse(key)] = convertJsonToList(Exercise.fromJson, m[key]);
     }
 
     return result;

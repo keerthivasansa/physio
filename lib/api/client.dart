@@ -21,7 +21,7 @@ class ApiClient {
     });
   }
 
-  Future<Result> get(String path, Map<String, String> query) {
+  Future<Result> get(String path, Map<String, dynamic> query) {
     final res = restApiClient.get(path,
         queryParameters: query,
         options: RestApiClientRequestOptions(headers: getHeaders()));

@@ -8,7 +8,7 @@ class HealthCard extends StatelessWidget {
   final String date;
   final Color valueColor;
   final Color progressBarColor;
-  final int progressValue;
+  final double progressValue;
   final int minValue;
   final int maxValue;
   final List<String> rangeValues;

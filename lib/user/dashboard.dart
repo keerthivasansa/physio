@@ -14,7 +14,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int totalDays = 0, complete = 0;
-  int heart = 0, lung = 0, oxygen = 0;
+  double heart = 0, lung = 0, oxygen = 0;
   String name = "John";
 
   _DashboardState() {
@@ -32,9 +32,10 @@ class _DashboardState extends State<Dashboard> {
       print(avg['heart']);
       print(info['totalDays']);
       setState(() {
-        heart = avg['heart'];
-        oxygen = avg['oxygen'];
-        lung = avg['lung'];
+        double zr = 0;
+        heart = (avg['heart'] + zr);
+        oxygen = (avg['oxygen'] + zr);
+        lung = (avg['lung'] + zr);
         name = info['id'];
         totalDays = info['totalDays'];
         complete = res.data['completed'];
@@ -147,7 +148,7 @@ class _DashboardState extends State<Dashboard> {
                 icon: Icons.favorite,
                 iconColor: Colors.red,
                 title: 'Heart Rate',
-                value: '$heart BPM',
+                value: '${heart.toStringAsFixed(1)} BPM',
                 date: '12-05-2024',
                 valueColor: Colors.red,
                 progressBarColor: Colors.orange,
@@ -166,7 +167,7 @@ class _DashboardState extends State<Dashboard> {
                 icon: Icons.air,
                 iconColor: Colors.green,
                 title: 'Respiratory Rate',
-                value: '$lung%',
+                value: '${lung.toStringAsFixed(1)}%',
                 date: '12-05-2024',
                 valueColor: Colors.green,
                 progressBarColor: Colors.green,
@@ -180,7 +181,7 @@ class _DashboardState extends State<Dashboard> {
                 icon: Icons.water_drop,
                 iconColor: Colors.purple,
                 title: 'Oxygen Saturation',
-                value: '$oxygen RPM',
+                value: '${oxygen.toStringAsFixed(1)} RPM',
                 date: '12-05-2024',
                 valueColor: Colors.purple,
                 progressBarColor: Colors.purple,
