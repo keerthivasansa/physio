@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:physio/nav/drawer.dart';
 
-AppBar createAppBar(BuildContext ctx, {bool showProfile = false}) {
+AppBar createAppBar(BuildContext ctx,
+    {bool showProfile = false, bool isDoc = false}) {
   return AppBar(
     backgroundColor: Colors.white,
     elevation: 0,
@@ -24,7 +25,7 @@ AppBar createAppBar(BuildContext ctx, {bool showProfile = false}) {
       IconButton(
         icon: const Icon(Icons.menu, color: Colors.grey),
         onPressed: () {
-          showDrawer(ctx);
+          showDrawer(ctx, isDoc: isDoc);
         },
       ),
     ],

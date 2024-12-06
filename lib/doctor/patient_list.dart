@@ -46,7 +46,7 @@ class _PatientsListScreenState extends State<PatientsListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: createAppBar(context),
+      appBar: createAppBar(context, isDoc: true),
       body: Column(
         children: [
           Padding(

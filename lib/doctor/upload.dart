@@ -99,7 +99,7 @@ class _UploadSectionState extends State<UploadSection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: createAppBar(context),
+      appBar: createAppBar(context, isDoc: true),
       body: ListView.builder(
         itemCount: widget.totalDays,
         itemBuilder: (context, day) {

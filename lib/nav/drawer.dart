@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:physio/api/auth.dart';
 import 'package:physio/auth.dart';
+import 'package:physio/doctor/dashboard.dart';
+import 'package:physio/doctor/patient_list.dart';
+import 'package:physio/user/dashboard.dart';
 import 'package:physio/utils.dart';
 
-void showDrawer(BuildContext context) {
+void showDrawer(BuildContext context, {bool isDoc = false}) {
   showGeneralDialog(
     context: context,
     barrierLabel: "Drawer",
@@ -16,7 +19,9 @@ void showDrawer(BuildContext context) {
         child: Container(
           width: MediaQuery.of(context).size.width *
               0.65, // 80% of the screen width
-          child: DrawerWidget(), // Custom Drawer widget
+          child: DrawerWidget(
+            isDoc: isDoc,
+          ), // Custom Drawer widget
         ),
       );
     },
@@ -33,6 +38,10 @@ void showDrawer(BuildContext context) {
 }
 
 class DrawerWidget extends StatelessWidget {
+  bool isDoc;
+
+  DrawerWidget({required this.isDoc});
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -49,31 +58,8 @@ class DrawerWidget extends StatelessWidget {
                     Navigator.pop(context); // Close the drawer
                   },
                 ),
-                ListTile(
-                  title: Text("Home", style: TextStyle(color: Colors.white)),
-                  onTap: () {},
-                ),
-                ListTile(
-                  title:
-                      Text("Patients", style: TextStyle(color: Colors.white)),
-                  onTap: () {},
-                ),
-                ListTile(
-                  title: Text("Profile", style: TextStyle(color: Colors.white)),
-                  onTap: () {},
-                ),
-                ListTile(
-                  title: Text("Help", style: TextStyle(color: Colors.white)),
-                  onTap: () {},
-                ),
-                ListTile(
-                  title: Text("Logout", style: TextStyle(color: Colors.white)),
-                  leading: Icon(Icons.logout, color: Colors.white),
-                  onTap: () async {
-                    final auth = locator.get<AuthState>();
-                    await auth.logout();
-                    navigate(context, const AuthScreen());
-                  },
+                Column(
+                  children: isDoc ? docDrawer(context) : patientDrawer(context),
                 ),
                 Spacer(),
                 const Text(
@@ -84,5 +70,67 @@ class DrawerWidget extends StatelessWidget {
             )),
       ),
     );
+  }
+
+  List<Widget> docDrawer(BuildContext context) {
+    return [
+      ListTile(
+        title: const Text("Home", style: TextStyle(color: Colors.white)),
+        onTap: () {
+          navigate(context, DoctorDashboard());
+        },
+      ),
+      ListTile(
+        title: const Text("Patients", style: TextStyle(color: Colors.white)),
+        onTap: () {
+          navigate(context, PatientsListScreen());
+        },
+      ),
+      ListTile(
+        title: const Text("Profile", style: TextStyle(color: Colors.white)),
+        onTap: () {},
+      ),
+      ListTile(
+        title: const Text("Help", style: TextStyle(color: Colors.white)),
+        onTap: () {},
+      ),
+      ListTile(
+        title: const Text("Logout", style: TextStyle(color: Colors.white)),
+        leading: Icon(Icons.logout, color: Colors.white),
+        onTap: () async {
+          final auth = locator.get<AuthState>();
+          await auth.logout();
+          navigate(context, const AuthScreen());
+        },
+      ),
+    ];
+  }
+
+  List<Widget> patientDrawer(BuildContext context) {
+    return [
+      ListTile(
+        title: const Text("Home", style: TextStyle(color: Colors.white)),
+        onTap: () {
+          navigate(context, Dashboard());
+        },
+      ),
+      ListTile(
+        title: const Text("Profile", style: TextStyle(color: Colors.white)),
+        onTap: () {},
+      ),
+      ListTile(
+        title: const Text("Help", style: TextStyle(color: Colors.white)),
+        onTap: () {},
+      ),
+      ListTile(
+        title: const Text("Logout", style: TextStyle(color: Colors.white)),
+        leading: Icon(Icons.logout, color: Colors.white),
+        onTap: () async {
+          final auth = locator.get<AuthState>();
+          await auth.logout();
+          navigate(context, const AuthScreen());
+        },
+      ),
+    ];
   }
 }

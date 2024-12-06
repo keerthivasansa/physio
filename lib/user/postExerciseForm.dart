@@ -35,19 +35,19 @@ class _HealthInfoFormState extends State<HealthInfoForm> {
               SizedBox(height: 20),
               _buildInputField(
                 label: 'Heart Rate',
-                hint: 'Enter Your Heart Rate',
+                hint: 'Enter Your Heart Rate (BPM)',
                 icon: Icons.favorite,
                 onSaved: (value) => heartRate = int.parse(value),
               ),
               _buildInputField(
                 label: 'Respiratory Rate',
-                hint: 'Enter your Respiratory rate',
+                hint: 'Enter your Respiratory rate (BPM)',
                 icon: Icons.person,
                 onSaved: (value) => respiratoryRate = int.parse(value),
               ),
               _buildInputField(
                 label: 'Oxygen Saturation',
-                hint: 'Enter your Oxygen saturation',
+                hint: 'Enter your Oxygen saturation (%)',
                 icon: Icons.lock,
                 onSaved: (value) => oxygen = int.parse(value),
               ),

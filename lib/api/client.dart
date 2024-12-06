@@ -9,8 +9,7 @@ class ApiClient {
   ApiClient() {
     restApiClient = RestApiClientImpl(
       options: RestApiClientOptions(
-          // baseUrl: "https://fccccsksoosgwkw0444cw8c4.keerthivasan.in",
-          baseUrl: "https://nhqnd5ml-5000.inc1.devtunnels.ms/",
+          baseUrl: "https://g8840ckso0gcg8scc4ksk80o.keerthivasan.in",
           cacheEnabled: true,
           overrideBadCertificate: false),
     );

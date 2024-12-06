@@ -20,7 +20,9 @@ class PatientDetailsScreen extends State<PatientDetail> {
 
   Patient? patient;
   List<PatientEntry>? entries = [];
-  int lastCompletedDay = 0;
+  Map<int, PatientEntry> entryMap = {};
+  int completedDays = 0;
+  int total = 0;
 
   @override
   void initState() {
@@ -34,13 +36,23 @@ class PatientDetailsScreen extends State<PatientDetail> {
     setState(() {
       patient = res.item1;
       entries = res.item2;
+
+      completedDays = DateTime.now().difference(patient!.startDate).inDays + 1;
+      if (completedDays > patient!.totalDays) {
+        completedDays = patient!.totalDays;
+      }
+
+      for (final ent in entries!) {
+        int diff = ent.date.difference(patient!.startDate).inDays;
+        entryMap[diff] = ent;
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: createAppBar(context),
+      appBar: createAppBar(context, isDoc: true),
       body: patient == null
           ? const CircularProgressIndicator()
           : SingleChildScrollView(
@@ -61,7 +73,7 @@ class PatientDetailsScreen extends State<PatientDetail> {
                         Row(
                           children: [
                             Text(
-                              lastCompletedDay.toString(),
+                              completedDays.toString(),
                               style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.blue,
@@ -100,15 +112,15 @@ class PatientDetailsScreen extends State<PatientDetail> {
                   ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: 4,
+                    itemCount: completedDays,
                     itemBuilder: (context, index) {
+                      final ent = entryMap[index];
                       return HealthMetricCard(
-                        date: DateTime.now().subtract(Duration(days: index)),
-                        heartRate: index == 2 ? null : (74 - index * 2),
-                        oxygenSaturation: index == 2 ? null : (94 - index * 9),
-                        breathsPerMinute: index == 2 ? null : (14 - index),
-                        status:
-                            index % 2 == 0 ? CardStatus.good : CardStatus.bad,
+                        date: patient!.startDate.add(Duration(days: index)),
+                        heartRate: ent?.params.heart,
+                        oxygenSaturation: ent?.params.oxygen,
+                        breathsPerMinute: ent?.params.lung,
+                        remarks: ent?.remarks,
                       );
                     },
                   ),
@@ -126,7 +138,7 @@ class HealthMetricCard extends StatelessWidget {
   final int? heartRate;
   final int? oxygenSaturation;
   final int? breathsPerMinute;
-  final CardStatus status;
+  final String? remarks;
 
   const HealthMetricCard({
     Key? key,
@@ -134,7 +146,7 @@ class HealthMetricCard extends StatelessWidget {
     this.heartRate,
     this.oxygenSaturation,
     this.breathsPerMinute,
-    required this.status,
+    this.remarks,
   }) : super(key: key);
 
   @override
@@ -157,15 +169,6 @@ class HealthMetricCard extends StatelessWidget {
                   '${date.day}/${date.month}/${date.year}',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Container(
-                  width: 12,
-                  height: 12,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color:
-                        status == CardStatus.good ? Colors.green : Colors.red,
-                  ),
-                ),
               ],
             ),
             SizedBox(height: 8),
@@ -173,14 +176,17 @@ class HealthMetricCard extends StatelessWidget {
                 oxygenSaturation != null &&
                 breathsPerMinute != null)
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildMetric(Icons.favorite, '$heartRate BPM', Colors.red),
                   SizedBox(height: 4),
                   _buildMetric(
                       Icons.water_drop, '$oxygenSaturation %', Colors.blue),
                   SizedBox(height: 4),
-                  _buildMetric(
-                      Icons.air, '$breathsPerMinute breaths p.m.', Colors.grey),
+                  _buildMetric(Icons.air, '$breathsPerMinute breaths p.m.',
+                      Colors.deepOrange),
+                  SizedBox(height: 4),
+                  if (remarks != null) Text('Remarks: $remarks'),
                 ],
               )
             else

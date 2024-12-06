@@ -25,127 +25,18 @@ class _AuthScreenState extends State<AuthScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isSignUp = true;
-                      });
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: isSignUp ? bgPrimaryBlue : Colors.grey[300],
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          bottomLeft: Radius.circular(10),
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Center(
-                        child: Text(
-                          'Create Account',
-                          style: TextStyle(
-                            color: isSignUp ? Colors.white : Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isSignUp = false;
-                      });
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: isSignUp ? Colors.grey[300] : bgPrimaryBlue,
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(10),
-                          bottomRight: Radius.circular(10),
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Center(
-                        child: Text(
-                          'Log In',
-                          style: TextStyle(
-                            color: isSignUp ? Colors.black : Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            const Text(
+              "Login",
+              style: TextStyle(
+                  fontSize: 24,
+                  color: Color.fromRGBO(60, 25, 166, 0.89),
+                  fontWeight: FontWeight.w900),
             ),
             const SizedBox(height: 20),
-            isSignUp ? const SignUpForm() : LoginForm(),
+            LoginForm(),
           ],
         ),
       ),
-    );
-  }
-}
-
-class SignUpForm extends StatelessWidget {
-  const SignUpForm({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const TextField(
-          decoration: InputDecoration(
-            labelText: 'Patient ID',
-            prefixIcon: Icon(Icons.badge),
-            border: UnderlineInputBorder(),
-          ),
-        ),
-        const SizedBox(height: 15),
-        const TextField(
-          decoration: InputDecoration(
-            labelText: 'Name',
-            prefixIcon: Icon(Icons.person),
-            border: UnderlineInputBorder(),
-          ),
-        ),
-        const SizedBox(height: 15),
-        const TextField(
-          obscureText: true,
-          decoration: InputDecoration(
-            labelText: 'Password',
-            prefixIcon: Icon(Icons.lock),
-            border: UnderlineInputBorder(),
-          ),
-        ),
-        const SizedBox(height: 30),
-        Center(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => DoctorDashboard()));
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: bgPrimaryBlue,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
-              ),
-            ),
-            child: const Text(
-              'Sign up',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
