@@ -7,6 +7,8 @@ import 'package:physio/nav/bar.dart';
 import 'package:physio/user/exercise.dart';
 import 'package:physio/user/healthCard.dart';
 import 'package:intl/intl.dart';
+import 'package:physio/user/reply.dart';
+import 'package:physio/utils.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -121,6 +123,30 @@ class _DashboardState extends State<Dashboard> {
                             ],
                           ),
                         )),
+                    const SizedBox(height: 60),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 20),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      onPressed: () {
+                        navigate(context, RepliesScreen());
+                      },
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.chat_bubble),
+                          SizedBox(width: 10),
+                          Text('Replies'),
+                          Spacer(),
+                          Icon(Icons.chevron_right),
+                        ],
+                      ),
+                    ),
                     const SizedBox(height: 40),
                     ElevatedButton(
                       onPressed: () {

@@ -51,4 +51,9 @@ class DoctorApi {
 
     return result;
   }
+
+  Future<void> saveReply(int day, String reply, String patientId) async {
+    await client.post("/doctor/replies/save",
+        {"day": day, "reply": reply, "patientId": patientId});
+  }
 }

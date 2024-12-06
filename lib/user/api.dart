@@ -9,6 +9,15 @@ class PatientApi {
     return List<String>.from(videos.data);
   }
 
+  Future<List<Map<String, String>>> getReplies() async {
+    final resp = await api.get("/patient/replies", {});
+    return (resp.data as List)
+        .map((element) => (element as Map).map(
+              (key, value) => MapEntry(key.toString(), value.toString()),
+            ))
+        .toList();
+  }
+
   Future<void> saveEntry(
       int heart, int lung, int oxygen, String remarks) async {
     await api.post("/patient/entry", {

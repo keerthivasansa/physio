@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:physio/nav/drawer.dart';
 
-AppBar createAppBar(BuildContext ctx,
-    {bool showProfile = false, bool isDoc = false}) {
+AppBar createAppBar(
+  BuildContext ctx, {
+  bool showProfile = false,
+  bool isDoc = false,
+}) {
   return AppBar(
     backgroundColor: Colors.white,
     elevation: 0,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:physio/api/auth.dart';
 import 'package:physio/api/common.dart';
 import 'package:physio/doctor/api.dart';
+import 'package:physio/doctor/reply.dart';
 import 'package:physio/doctor/upload.dart';
 import 'package:physio/nav/bar.dart';
 import 'package:physio/utils.dart';
@@ -115,12 +116,29 @@ class PatientDetailsScreen extends State<PatientDetail> {
                     itemCount: completedDays,
                     itemBuilder: (context, index) {
                       final ent = entryMap[index];
-                      return HealthMetricCard(
-                        date: patient!.startDate.add(Duration(days: index)),
-                        heartRate: ent?.params.heart,
-                        oxygenSaturation: ent?.params.oxygen,
-                        breathsPerMinute: ent?.params.lung,
-                        remarks: ent?.remarks,
+                      return Column(
+                        children: [
+                          HealthMetricCard(
+                            date: patient!.startDate.add(Duration(days: index)),
+                            heartRate: ent?.params.heart,
+                            oxygenSaturation: ent?.params.oxygen,
+                            breathsPerMinute: ent?.params.lung,
+                            remarks: ent?.remarks,
+                          ),
+                          ElevatedButton(
+                              onPressed: () {
+                                navigate(
+                                    context,
+                                    DocReplyForm(
+                                        day: index,
+                                        heartRate: ent?.params.heart ?? 0,
+                                        respiratoryRate: ent?.params.lung ?? 0,
+                                        oxygen: ent?.params.oxygen ?? 0,
+                                        feedback: ent?.remarks ?? "",
+                                        patientId: patient?.id ?? ""));
+                              },
+                              child: const Text("Reply"))
+                        ],
                       );
                     },
                   ),
